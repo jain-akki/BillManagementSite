@@ -1,0 +1,170 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-controller="myCntrl">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <div class="container">
+        <h2 class="jumbotron text-center" style="font-weight:bold;padding:20px;"> Bills Management Web Application</h2>
+
+        <br />
+
+        <input type="button" class="btn btn-primary" value=" + Add Bill" ng-click="AddBillDiv()" />
+        <input type="button" class="btn btn-primary" value="Total Summary" ng-click="AddMonthDiv()" />
+    </div>
+    <div class="container">
+        <h4 class="jumbotron" style="font-weight:bold;background-color:lightgrey;padding:10px;">Bill's List</h4>
+        <table cellpadding="12" class="table table-bordered table-hover">
+            <tr>
+                <th>Bill_No</th>
+                <th>Bill_Date</th>
+                <th>Bill_Title</th>
+                <th>Bill_Category</th>
+                <th>Bill_Amount</th>
+                <th>Actions</th>
+            </tr>
+            <tr ng-repeat="bill in bills">
+                <td>
+                    {{bill.id}}
+                </td>
+                <td>
+                    {{bill.date}}
+                </td>
+                <td>
+                    {{bill.title}}
+                </td>
+                <td>
+                    {{bill.category}}
+                </td>
+                <td>
+                    {{bill.amount}}
+                </td>
+                <td>
+                    <span ng-click="editBill(bill)" class="btn btn-info">Edit</span>
+                    <span ng-click="deleteBill(bill)" class="btn btn-danger">Delete</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div ng-show="divBill" class="container">
+        <h4 class="jumbotron" style="font-weight:bold;background-color:lightgrey;padding:10px;">{{Action}} Bills</h4>
+        <table class="table table-bordered table-hover">
+            <tr>
+                <td><b>Bill_No</b></td>
+                <td>
+                    <input type="text" disabled="disabled" class="form-control" ng-model="billId" />
+                </td>
+            </tr>
+            <tr>
+                <td><b>Bill_Date</b></td>
+                <td>
+                    <!--<input type="text" ng-model="billDate" class="form-control" placeholder="Select Date" required>-->
+                    <div class="form-group" style="width:100%;display:inline-block">
+                        <select class="form-control" id="sel1" ng-model="billDate" placeholder="Select Date">
+                            <option selected>--Select Month--</option>
+                            <option>Jan</option>
+                            <option>Feb</option>
+                            <option>Mar</option>
+                            <option>Apr</option>
+                            <option>May</option>
+                            <option>Jun</option>
+                            <option>Jul</option>
+                            <option>Aug</option>
+                            <option>Sept</option>
+                            <option>Oct</option>
+                            <option>Nov</option>
+                            <option>Dec</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Bill_Title</b></td>
+                <td>
+                    <input type="text" ng-model="billTitle" class="form-control" placeholder="Enter Bill Title" required>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Bill_Category</b></td>
+                <td>
+                    <div class="form-group" style="width:100%;display:inline-block">
+                        <select class="form-control" id="sel1" ng-model="billCategory">
+                            <option selected>--Select Category--</option>
+                            <option>Electricity</option>
+                            <option>Water</option>
+                            <option>LPG/Gasoline</option>
+                            <option>Medical</option>
+                            <option>Food</option>
+                            <option>Entertainment</option>
+                            <option>Clothing</option>
+                            <option>Telephone</option>
+                            <option>Rent</option>
+                            <option>Movie</option>
+                            <option>Internet</option>
+                            <option>Other Bills</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Bill_Amount</b></td>
+                <td>
+                    <input type="number" ng-model="billAmount" class="form-control" placeholder="Enter Bill Amount" required>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="button" class="btn btn-info" value="Save" ng-click="AddUpdateBill()" />
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div ng-show="divMonth" class="container">
+        <h4 class="jumbotron" style="font-weight:bold;background-color:lightgrey;padding:10px;">Monthly Summary of Bills</h4>
+        <table class="table table-bordered table-hover">
+            <tr>
+                <td><b>Select Month</b></td>
+                <td>
+                    <!--<input type="text" ng-model="billDate" class="form-control" placeholder="Select Date" required>-->
+                    <div class="form-group" style="width:100%;display:inline-block">
+                        <select class="form-control" id="sel1" ng-model="billMonth" placeholder="Select Date">
+                            <option selected>--Select Month--</option>
+                            <option>Jan</option>
+                            <option>Feb</option>
+                            <option>Mar</option>
+                            <option>Apr</option>
+                            <option>May</option>
+                            <option>Jun</option>
+                            <option>Jul</option>
+                            <option>Aug</option>
+                            <option>Sept</option>
+                            <option>Oct</option>
+                            <option>Nov</option>
+                            <option>Dec</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="button" class="btn btn-info" value="Show" ng-click="Month(billMonth)" />
+                </td>
+            </tr>
+        </table>
+        <table ng-show="tabTotal" class="table table-bordered table-hover" ng-init="total=0">
+            <tr>
+                <td><b>Total Expense: </b></td>
+                <td>
+                    {{ getTotal(billMonth) }}
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
